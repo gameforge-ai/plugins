@@ -55,7 +55,7 @@ public class Entity : MonoBehaviour
             Texture2D texture = DownloadHandlerTexture.GetContent(www);
 
             // Create a sprite from the texture
-            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
             // Apply the sprite to the Image component
             if(entityImage != null)

@@ -58,7 +58,7 @@ public class ImporterResultsDialog : EditorWindow
         Sprite hierarchySprite = AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GUIDToAssetPath(Utils.RetrieveGUID(entitiesName)));
         Sprite sceneSprite = AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GUIDToAssetPath(Utils.RetrieveGUID(sceneName)));
 
-        string title = "IMPORT SUCCESSFULL";
+        string title = "IMPORT SUCCESSFUL";
         switch (errorsEnum)
         {
             case ImportErrorEnum.AUTHENTICATION_ERROR:

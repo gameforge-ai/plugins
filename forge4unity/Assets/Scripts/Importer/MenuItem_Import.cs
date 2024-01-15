@@ -12,6 +12,7 @@ public class MenuItemImport : EditorWindow
     private TextField username;
     private TextField secret;
     private TextField campaignId;
+    private TextField openAIApiKey;
     private Toggle useOTP;
 
     private bool isOTP = false;

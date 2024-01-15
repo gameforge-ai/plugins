@@ -17,8 +17,7 @@ public class Importer : MonoBehaviour
     public void Initialize()
     {
         spawnCounter = new Dictionary<EntityEnum, int>();
-        ImportErrorEnum errors = ImportErrorEnum.NO_ERROR;
-
+        ImportErrorEnum errors;
         if (string.IsNullOrEmpty(PlayerPrefs.GetString("token")))
             errors = ImportErrorEnum.AUTHENTICATION_ERROR;
         else
