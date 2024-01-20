@@ -104,8 +104,13 @@ public class Importer : MonoBehaviour
 
             if(CheckIfRecreateCampaign(campaignData.name))
             {
+                // DESTROY PREVIOUS CAMPAIGN
                 if (GameObject.Find(campaignData.name))
                     DestroyImmediate(GameObject.Find(campaignData.name));
+
+                // CLEAR DROPDOWNS
+                if (FindFirstObjectByType<CharacterDropdown>() != null)
+                    FindFirstObjectByType<CharacterDropdown>().ClearOptions();
 
                 GameObject go = new(campaignData.name);
 
@@ -168,7 +173,7 @@ public class Importer : MonoBehaviour
         ImportErrorEnum errors = ImportErrorEnum.NO_ERROR;
         foreach (EntityData entity in entitiesData)
         {
-            EditorUtility.DisplayProgressBar("Importing from GameForge", string.Format("Downloading {0}", entity.name), 0.5f);
+            EditorUtility.DisplayCancelableProgressBar("Importing from GameForge", string.Format("Downloading {0}", entity.name), 0.5f);
             EntityDetailsData entityData = PullEntityDetails(entity);
             if(entityData == null)
             {

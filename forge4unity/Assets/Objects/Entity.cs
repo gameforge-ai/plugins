@@ -37,7 +37,7 @@ public class Entity : MonoBehaviour
             GameObject go = new(string.Format("{0} Map", gameObject.name));
             go.transform.parent = transform;
             Map entityMap = go.AddComponent<Map>();
-            entityMap.Initialize(data.map.thumbnail_url);
+            entityMap.Initialize(data, entityTypeCounter);
         }
     }
 
@@ -66,5 +66,19 @@ public class Entity : MonoBehaviour
             Debug.LogError("Failed to load image. Error: " + www.error);
         }
         loadingImage = false;
+    }
+
+    public EntityDetailsData GetEntityData()
+    {
+        return entityData;
+    }
+
+    public bool IsLoadingImage()
+    {
+        return loadingImage;
+    }
+    public Image GetEntityImage()
+    {
+        return entityImage;
     }
 }
