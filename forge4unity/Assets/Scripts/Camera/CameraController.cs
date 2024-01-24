@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 
@@ -44,6 +46,11 @@ public class CameraController : MonoBehaviour
     private Texture2D anchoredRotationTexture;
     [SerializeField]
     private Texture2D anchoredMovementTexture;
+
+    [Header("DISTANCE TO TALK TO NPCs")]
+    [SerializeField]
+    private float maxRaycastDistance = 10f;
+    private string message = "Press SPACE to talk to";
 
     private void LateUpdate()
     {
@@ -95,8 +102,13 @@ public class CameraController : MonoBehaviour
         //Scroll to zoom
         float mouseScroll = Input.GetAxis(zoomAxis);
         transform.Translate(mouseScroll * zoomSpeed * Vector3.forward);
+
+        CheckIfCharacterToTalkTo();
     }
-    public void UpdateMouseIcon()
+    /// <summary>
+    /// Shows a different mouse icon depending on your navigation action
+    /// </summary>
+    private void UpdateMouseIcon()
     {
         Texture2D icon = null;
         if (Input.GetKey(anchoredMoveKey))
@@ -107,4 +119,37 @@ public class CameraController : MonoBehaviour
         Cursor.SetCursor(icon, Vector2.zero, CursorMode.Auto);
     }
 
+    /// <summary>
+    /// Sets the text of the notification widget about who are you talking to (if any)
+    /// </summary>
+    private void CheckIfCharacterToTalkTo()
+    {
+        // Get the camera's position
+        Vector3 cameraPosition = Camera.main.transform.position;
+
+        // Get the camera's forward direction
+        Vector3 cameraForward = Camera.main.transform.forward;
+
+        // Create a ray from the camera's position in the forward direction
+        Ray ray = new (cameraPosition, cameraForward);
+
+        bool lookingAtCharacter = false;
+        // Check if the ray hits something
+        if (Physics.Raycast(ray, out RaycastHit hit, maxRaycastDistance))
+        {
+            // Access the collider that was hit
+            Collider hitCollider = hit.collider;
+
+            GameObject hitColliderGameObject = hitCollider.gameObject;
+            if(hitColliderGameObject.GetComponent<RuntimeCharacter>() != null)
+            {
+                hitColliderGameObject.GetComponent<RuntimeCharacter>().Listen();
+                GameObject.FindFirstObjectByType<CloseToTalkNotification>().SetEnabled(true);
+                GameObject.FindFirstObjectByType<CloseToTalkNotification>().SetText(message + "\n" + hitColliderGameObject.GetComponent<RuntimeCharacter>().GetName());
+                lookingAtCharacter = true;
+            }
+        }
+        if (!lookingAtCharacter)
+            GameObject.FindFirstObjectByType<CloseToTalkNotification>().SetEnabled(false);
+    }
 }

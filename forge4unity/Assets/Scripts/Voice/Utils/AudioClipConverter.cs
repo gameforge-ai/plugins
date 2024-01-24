@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace GameForgeAI.OpenAISdk
+namespace GameForgeAI.Utils
 {
     public static class AudioClipConverter
     {

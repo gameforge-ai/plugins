@@ -96,14 +96,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 966945241324934509}
-  - component: {fileID: 1000920188676521691}
+  - component: {fileID: 5982146235421998578}
   m_Layer: 0
   m_Name: Voice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &966945241324934509
 Transform:
   m_ObjectHideFlags: 0
@@ -119,19 +119,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8083284803537280815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1000920188676521691
+--- !u!114 &5982146235421998578
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4994679222578813678}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f83ded998259487e9052ca3b3e4ee56, type: 3}
+  m_Script: {fileID: 11500000, guid: 2816fdfa6e9c44f8ea356459a2a5ff71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   assistantId: 
+  audioSource: {fileID: 0}
+  debugMode: 0
+  initialized: 0
+  listening: 0
 --- !u!1 &6085193972896860676
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8083284803537280815}
   - component: {fileID: -8912655405881719647}
+  - component: {fileID: 428280492171874488}
   m_Layer: 0
   m_Name: GameForgeCharacterDummy
   m_TagString: Untagged
@@ -356,7 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86857863477bbe04bbc10d110e337a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceController: {fileID: 1000920188676521691}
+  audioSourceObjectName: 
+  voiceController: {fileID: 5982146235421998578}
   textWidget: {fileID: 7542642649142185409}
   thumbnailWidget: {fileID: 2591640408175880192}
   entityData:
@@ -393,6 +399,30 @@ MonoBehaviour:
     assistant: 
     openai_assistant_id: 
     parent_map_id: 
+  listening: 0
+--- !u!136 &428280492171874488
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7150885155649421228}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Height: 2.05
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!1001 &4796462540064983234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -448,41 +478,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8654250720420973338, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1935957360153810620}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
 --- !u!4 &4218296605982416440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8654250720420943610, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
   m_PrefabInstance: {fileID: 4796462540064983234}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4218296605982770136 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8654250720420973338, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
-  m_PrefabInstance: {fileID: 4796462540064983234}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &1935957360153810620
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4218296605982770136}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.98
-  m_Height: 2.05
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}

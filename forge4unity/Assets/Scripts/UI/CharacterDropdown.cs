@@ -34,7 +34,7 @@ public class CharacterDropdown : MonoBehaviour
             return;
 
         TMP_Dropdown.OptionData option = GetComponent<TMP_Dropdown>().options[index];
-        foreach(InstantiatedCharacter character in FindObjectsByType<InstantiatedCharacter>(FindObjectsSortMode.None))
+        foreach(RuntimeCharacter character in FindObjectsByType<RuntimeCharacter>(FindObjectsSortMode.None))
         {
             if( character.GetName() == option.text)
             {

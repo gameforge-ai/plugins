@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Character : Entity
 {
+    private const string ASSISTANT_ID = "https://apidev.gameforge.ai/v1/entities/{id}/get_assistant/";
     private const string DUMMY = "GameForgeCharacterDummy";
 
     private const float distance = 3f;
+
+    public AssistantDetailsData assistantDetailsData;
 
     /// <summary>
     /// Initializes the Character Entity
@@ -16,6 +19,7 @@ public class Character : Entity
     public override void Initialize(EntityDetailsData data, int entityCounter)
     {
         base.Initialize(data, entityCounter);
+        AssignAssistantId();
         InitializeMesh();
     }
 
@@ -50,9 +54,42 @@ public class Character : Entity
 
         dummy.name = entityData.name;
 
-        if (dummy.GetComponentInChildren<InstantiatedCharacter>() != null)
-            dummy.GetComponentInChildren<InstantiatedCharacter>().Initialize(this);
+        if (dummy.GetComponentInChildren<RuntimeCharacter>() != null)
+            dummy.GetComponentInChildren<RuntimeCharacter>().Initialize(this);
     }
+
+    /// <summary>
+    /// Adds the Mesh to the entity
+    /// </summary>
+    void AssignAssistantId()
+    {
+        if (!string.IsNullOrEmpty(entityData.assistant))
+            return;
+
+        UnityWebRequest uwr = UnityWebRequest.Get(ASSISTANT_ID.Replace("{id}", entityData.id));
+        uwr.SetRequestHeader("Authorization", Utils.GetAuthHeader());
+        uwr.SendWebRequest();
+
+        while (!uwr.isDone) { };
+
+        // Check for errors
+        if (uwr.result != UnityWebRequest.Result.Success)
+            Debug.LogError(string.Format("Unable to create a Conversational Assistant for {0}. Error: {1}", entityData.name, uwr.error));
+        else
+        {
+            AssistantData assistantData = JsonUtility.FromJson<AssistantData>(uwr.downloadHandler.text);
+            
+            if(assistantData.assistant == null)
+                Debug.Log(string.Format("Unable to retrieve assistant details for {0}", entityData.name));
+            else
+            {
+                assistantDetailsData = assistantData.assistant;
+                entityData.assistant = assistantDetailsData.id;
+                entityData.openai_assistant_id= assistantDetailsData.openai_assistant_id;
+            }
+        }
+    }
+
 
     /// <summary>
     /// Paints the image on top of the mesh
@@ -66,7 +103,7 @@ public class Character : Entity
         }
 
         MapSpriteRenderer map;
-        int timeout = 30;
+        int timeout = 10;
         while(true)
         {
             map = GetMapById(entityData.parent_map_id);
@@ -83,10 +120,7 @@ public class Character : Entity
         }
 
         if (map == null)
-        {
-            Debug.LogError(string.Format("Timeout expired waiting for the map {0} associated to character `{1}`", entityData.parent_map_id, entityData.name));
             SpawnWithNoPosition(dummy);
-        }
         else
         {
             // dummy.transform.parent = map.gameObject.transform;
