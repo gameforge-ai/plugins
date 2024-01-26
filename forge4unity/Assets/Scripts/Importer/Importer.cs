@@ -9,7 +9,7 @@ public class Importer : MonoBehaviour
     private static readonly string CAMPAIGN_URL = "https://apidev.gameforge.ai/v1/campaigns/{id}/";
     private static readonly string ENTITIES_URL = "https://apidev.gameforge.ai/v1/campaigns/{id}/entities/";
     private static readonly string ENTITY_DETAILS_URL = "https://apidev.gameforge.ai/v1/entities/{id}/";
-
+    
     private Dictionary<EntityEnum, int> spawnCounter;
     /// <summary>
     /// Initializes the Importer class, which retrieves the token and triggers the pulling of objects
@@ -112,7 +112,7 @@ public class Importer : MonoBehaviour
                 if (FindFirstObjectByType<CharacterDropdown>() != null)
                     FindFirstObjectByType<CharacterDropdown>().ClearOptions();
 
-                GameObject go = new(campaignData.name);
+                GameObject go = new(string.Format("campaign::{0}", campaignData.name));
 
                 Campaign campaign = go.AddComponent<Campaign>();
                 campaign.Initialize(campaignData);
@@ -173,7 +173,7 @@ public class Importer : MonoBehaviour
         ImportErrorEnum errors = ImportErrorEnum.NO_ERROR;
         foreach (EntityData entity in entitiesData)
         {
-            EditorUtility.DisplayCancelableProgressBar("Importing from GameForge", string.Format("Downloading {0}", entity.name), 0.5f);
+            EditorUtility.DisplayProgressBar("Importing from GameForge", string.Format("Downloading {0}", entity.name), 0.5f);
             EntityDetailsData entityData = PullEntityDetails(entity);
             if(entityData == null)
             {
@@ -209,6 +209,7 @@ public class Importer : MonoBehaviour
                         go.AddComponent<Puzzle>().Initialize(entityData, spawnCounter[entityEnum]);
                         break;
                 }
+                go.name = string.Format("{0}::{1}", entityEnum.ToString(), go.name);
                 spawnCounter[entityEnum]++;
             }
 

@@ -7,7 +7,7 @@ public class Map : MonoBehaviour
 {
     private const string WHITEBOX = "GameForgeMapWhitebox";
 
-    private const float distance = 50f;
+    private const float distance = 20f;
 
     public EntityDetailsData entityData;
 
@@ -42,7 +42,7 @@ public class Map : MonoBehaviour
         if (!found)
             plane.transform.parent = transform;
         plane.transform.SetPositionAndRotation(position, Quaternion.Euler(90f, 0f, 0f));
-        plane.name = entityData.name;
+        plane.name = string.Format("renderer::{0}", gameObject.name);
         StartCoroutine(PaintMapOnPlane(imageUrl, plane));
     }
 

@@ -8,8 +8,11 @@ public class Character : Entity
 {
     private const string ASSISTANT_ID = "https://apidev.gameforge.ai/v1/entities/{id}/get_assistant/";
     private const string DUMMY = "GameForgeCharacterDummy";
+    private const string PLACING = "[WAITING ON MAP]";
 
     private const float distance = 3f;
+    
+    private string meshName;
 
     public AssistantDetailsData assistantDetailsData;
 
@@ -19,6 +22,7 @@ public class Character : Entity
     public override void Initialize(EntityDetailsData data, int entityCounter)
     {
         base.Initialize(data, entityCounter);
+        meshName = string.Format("mesh::{0}", entityData.name);
         AssignAssistantId();
         InitializeMesh();
     }
@@ -42,6 +46,7 @@ public class Character : Entity
                     dummy = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(Utils.RetrieveGUID(DUMMY)))); // default dummy
                 
                 dummy.transform.parent = placeholder.gameObject.transform;
+                dummy.name = meshName;
                 break;
             }
         }
@@ -49,10 +54,10 @@ public class Character : Entity
         if (dummy == null)
         {
             dummy = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(Utils.RetrieveGUID(DUMMY))));
+            dummy.name = PLACING + meshName;
             StartCoroutine(WaitToPaintOnMap(dummy));
         }
 
-        dummy.name = entityData.name;
 
         if (dummy.GetComponentInChildren<RuntimeCharacter>() != null)
             dummy.GetComponentInChildren<RuntimeCharacter>().Initialize(this);
@@ -98,12 +103,13 @@ public class Character : Entity
     {
         if (string.IsNullOrEmpty(entityData.parent_map_id))
         {
+            dummy.name = meshName;
             SpawnWithNoPosition(dummy);
             yield return null;
         }
 
         MapSpriteRenderer map;
-        int timeout = 10;
+        int timeout = 5;
         while(true)
         {
             map = GetMapById(entityData.parent_map_id);
@@ -118,19 +124,24 @@ public class Character : Entity
             else
                 break;
         }
+        
+        dummy.name = meshName;
 
         if (map == null)
             SpawnWithNoPosition(dummy);
         else
         {
-            // dummy.transform.parent = map.gameObject.transform;
             Vector3 position = new(
                 entityData.point.latitude + map.transform.parent.position.x,
                 0f,
                 entityData.point.longitude + map.transform.parent.position.y);
             dummy.transform.position = position;
-            dummy.transform.SetParent(map.transform, true);
+            dummy.transform.SetParent(map.transform, true);            
             dummy.transform.position /= 100f;
+            dummy.transform.position = new Vector3(
+                dummy.transform.position.x + map.transform.position.x,
+                0f,
+                dummy.transform.position.z + map.transform.position.z);
         }
     }
 

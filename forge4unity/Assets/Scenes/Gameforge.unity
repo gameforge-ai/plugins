@@ -1114,6 +1114,12 @@ MonoBehaviour:
     - m_Text: Dunlander of the White Hand
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: Saruman the White
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: Dunadan Ranger
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1334,6 +1340,7 @@ MonoBehaviour:
   anchoredRotationTexture: {fileID: 2800000, guid: f6d72670b4231ce4a99327caabf628f1, type: 3}
   anchoredMovementTexture: {fileID: 2800000, guid: c1649265a1899bf43b4be6b9bea7068c, type: 3}
   maxRaycastDistance: 10
+  message: Press ALT to talk to
 --- !u!1 &1202266736
 GameObject:
   m_ObjectHideFlags: 0

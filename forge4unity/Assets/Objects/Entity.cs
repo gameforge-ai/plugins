@@ -34,7 +34,7 @@ public class Entity : MonoBehaviour
         
         if (data.map != null && data.map.thumbnail_url != null)
         {
-            GameObject go = new(string.Format("{0} Map", gameObject.name));
+            GameObject go = new(string.Format("map::{0}", gameObject.name));
             go.transform.parent = transform;
             Map entityMap = go.AddComponent<Map>();
             entityMap.Initialize(data, entityTypeCounter);

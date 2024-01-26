@@ -50,7 +50,8 @@ public class CameraController : MonoBehaviour
     [Header("DISTANCE TO TALK TO NPCs")]
     [SerializeField]
     private float maxRaycastDistance = 10f;
-    private string message = "Press SPACE to talk to";
+    [SerializeField]
+    private string message = "Press ALT to talk to";
 
     private void LateUpdate()
     {

@@ -16,6 +16,8 @@ public class RuntimeCharacter : MonoBehaviour
     EntityDetailsData entityData;
     [SerializeField]
     bool listening;
+    [SerializeField]
+    private Vector3 worldPosition;
 
     private Character character;
 
@@ -73,5 +75,9 @@ public class RuntimeCharacter : MonoBehaviour
     public void SetVoiceControllerListening(bool listening)
     {
         voiceController.SetListening(listening);
+    }
+    public void Update()
+    {
+        worldPosition = transform.position;
     }
 }

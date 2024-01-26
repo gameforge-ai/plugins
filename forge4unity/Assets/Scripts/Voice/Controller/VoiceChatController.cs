@@ -46,7 +46,6 @@ public class VoiceChatController : MonoBehaviour
             this.audioSource = GameObject.Find(audioSourceObjectName).GetComponent<AudioSource>();
         else
         {
-            Debug.LogWarning(string.Format("`{0}`'s `AudioSource` not found or not set. Getting first `AudioSource` from the scene", gameObject.transform.parent.name));
             this.audioSource = GameObject.FindFirstObjectByType<AudioSource>();
             if (this.audioSource == null)
             {
